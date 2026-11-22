@@ -4,7 +4,26 @@ Go'da en sık yapılan **10 hata** ve doğru kullanımları. Her madde için kı
 
 > Öğrenciler, Go'ya yeni başlayanlar ve kod inceleme yapanlar için hazırlanmış kısa bir başvuru kaynağı.
 
-## İçindekiler
+## Go Temelleri
+
+Go'ya sıfırdan başlayanlar için kısa konu anlatımları. Her konuda satır satır açıklamalı, çalıştırılabilir bir örnek ve çıktısı var.
+
+1. [Merhaba Dünya](temeller/01-merhaba-dunya.md)
+2. [Değişkenler ve Tipler](temeller/02-degiskenler-ve-tipler.md)
+3. [if / else](temeller/03-if-else.md)
+4. [for Döngüsü (ve while)](temeller/04-for-dongusu.md)
+5. [switch](temeller/05-switch.md)
+6. [Fonksiyonlar](temeller/06-fonksiyonlar.md)
+7. [Slice ve Map](temeller/07-slice-ve-map.md)
+8. [Struct ve Metotlar](temeller/08-struct-ve-metot.md)
+9. [Hata Yönetimi](temeller/09-hata-yonetimi.md)
+10. [Goroutine ve Kanallar](temeller/10-goroutine-ve-kanal.md)
+
+---
+
+## Sık Yapılan 10 Hata
+
+### İçindekiler
 
 1. [nil map'e yazmak](#1-nil-mape-yazmak)
 2. [Döngü değişkenini goroutine içinde kullanmak](#2-döngü-değişkenini-goroutine-içinde-kullanmak)
