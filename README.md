@@ -1,5 +1,7 @@
 # Go Türkçe İpuçları 🐹
 
+[![Go](https://github.com/mikbalyildiz/go-turkce-ipuclari/actions/workflows/go.yml/badge.svg)](https://github.com/mikbalyildiz/go-turkce-ipuclari/actions/workflows/go.yml) [![Go sürümü](https://img.shields.io/github/go-mod/go-version/mikbalyildiz/go-turkce-ipuclari)](go.mod) [![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-blue.svg)](LICENSE)
+
 Go'da en sık yapılan **10 hata** ve doğru kullanımları. Her madde için kısa bir **yanlış** ve **doğru** örnek var, kodun her satırı Türkçe açıklamalı.
 
 > Öğrenciler, Go'ya yeni başlayanlar ve kod inceleme yapanlar için hazırlanmış kısa bir başvuru kaynağı.
@@ -18,6 +20,19 @@ Go'ya sıfırdan başlayanlar için kısa konu anlatımları. Her konuda satır 
 8. [Struct ve Metotlar](temeller/08-struct-ve-metot.md)
 9. [Hata Yönetimi](temeller/09-hata-yonetimi.md)
 10. [Goroutine ve Kanallar](temeller/10-goroutine-ve-kanal.md)
+
+## Çalıştırılabilir Örnekler
+
+Her konunun tam programı [`ornekler/`](ornekler) klasöründe. Go kuruluysa repoyu indirip doğrudan çalıştırabilirsiniz:
+
+```bash
+# Repoyu bilgisayara indir
+git clone https://github.com/mikbalyildiz/go-turkce-ipuclari.git
+# Repo klasörüne gir
+cd go-turkce-ipuclari
+# Bir örneği çalıştır
+go run ./ornekler/01-merhaba-dunya
+```
 
 ---
 
