@@ -1,0 +1,67 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:57 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20Struct=20ve=20Metotlar=20=C3=A7al?=
+ =?UTF-8?q?=C4=B1=C5=9Ft=C4=B1r=C4=B1labilir=20program=C4=B1?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ ornekler/08-struct-ve-metot/main.go | 29 +++++++++++++++++++++++++++++
+ temeller/08-struct-ve-metot.md      |  2 ++
+ 2 files changed, 31 insertions(+)
+ create mode 100644 ornekler/08-struct-ve-metot/main.go
+
+diff --git a/ornekler/08-struct-ve-metot/main.go b/ornekler/08-struct-ve-metot/main.go
+new file mode 100644
+index 0000000..236458d
+--- /dev/null
++++ b/ornekler/08-struct-ve-metot/main.go
+@@ -0,0 +1,29 @@
++// Konu anlatımı: temeller/08-struct-ve-metot.md
++// Çalıştırmak için: go run ./ornekler/08-struct-ve-metot
++package main // çalıştırılabilir program
++
++import "fmt" // yazdırma paketi
++
++type Ogrenci struct { // struct: ilgili alanları bir arada tutan özel tip
++	Ad  string // öğrencinin adı
++	Not int    // öğrencinin notu
++} // struct sonu
++
++func (o Ogrenci) Durum() string { // metot: Ogrenci tipine bağlı fonksiyon (değer alıcı)
++	if o.Not >= 50 { // alanlara nokta ile erişilir
++		return o.Ad + " geçti" // metin birleştirme
++	} // if sonu
++	return o.Ad + " kaldı" // koşul tutmazsa
++} // metot sonu
++
++func (o *Ogrenci) NotEkle(puan int) { // işaretçi alıcı: asıl nesneyi değiştirir
++	o.Not += puan // orijinal öğrencinin notu artar
++} // metot sonu
++
++func main() { // program girişi
++	ali := Ogrenci{Ad: "Ali", Not: 45} // alan adlarıyla nesne oluştur
++	fmt.Println(ali.Durum())           // Ali kaldı
++	ali.NotEkle(10)                    // Go &ali'yi otomatik alır
++	fmt.Println(ali.Not, ali.Durum())  // 55 Ali geçti
++	fmt.Printf("%+v\n", ali)           // %+v alan adlarıyla birlikte yazdırır
++} // program sonu
+diff --git a/temeller/08-struct-ve-metot.md b/temeller/08-struct-ve-metot.md
+index a85b2f0..0271519 100644
+--- a/temeller/08-struct-ve-metot.md
++++ b/temeller/08-struct-ve-metot.md
+@@ -40,6 +40,8 @@ Ali kaldı
+ {Ad:Ali Not:55}
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/08-struct-ve-metot`
++
+ ---
+ 
+ [← Slice ve Map](07-slice-ve-map.md) · [İçindekiler](../README.md#go-temelleri) · [Hata Yönetimi →](09-hata-yonetimi.md)
+-- 
+2.43.0
+

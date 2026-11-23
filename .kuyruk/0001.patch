@@ -1,0 +1,62 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:57 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20De=C4=9Fi=C5=9Fkenler=20ve=20Tipl?=
+ =?UTF-8?q?er=20=C3=A7al=C4=B1=C5=9Ft=C4=B1r=C4=B1labilir=20program=C4=B1?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ ornekler/02-degiskenler-ve-tipler/main.go | 24 +++++++++++++++++++++++
+ temeller/02-degiskenler-ve-tipler.md      |  2 ++
+ 2 files changed, 26 insertions(+)
+ create mode 100644 ornekler/02-degiskenler-ve-tipler/main.go
+
+diff --git a/ornekler/02-degiskenler-ve-tipler/main.go b/ornekler/02-degiskenler-ve-tipler/main.go
+new file mode 100644
+index 0000000..66f2128
+--- /dev/null
++++ b/ornekler/02-degiskenler-ve-tipler/main.go
+@@ -0,0 +1,24 @@
++// Konu anlatımı: temeller/02-degiskenler-ve-tipler.md
++// Çalıştırmak için: go run ./ornekler/02-degiskenler-ve-tipler
++package main // çalıştırılabilir program
++
++import "fmt" // yazdırma paketi
++
++const pi = 3.14 // const: değeri asla değişmeyen sabit
++
++func main() { // program girişi
++	var ad string = "Ayşe" // var ile tipi açıkça belirterek tanımlama
++	var yas int            // değer verilmezse sıfır değer alır: int için 0
++	yas = 20               // sonradan değer atama
++	boy := 1.68            // := kısa tanımlama, tip otomatik çıkarılır (float64)
++	ogrenci := true        // bool: true ya da false
++
++	fmt.Println(ad, yas, boy, ogrenci)     // değerleri yan yana yazdır
++	fmt.Printf("%s %d yaşında\n", ad, yas) // %s metin, %d tam sayı yer tutucusu
++	fmt.Printf("boy'un tipi: %T\n", boy)   // %T değişkenin tipini yazar
++	fmt.Println("Daire alanı:", pi*2*2)    // sabit hesaplamada kullanılabilir
++
++	var x int = 7       // tam sayı
++	y := float64(x) / 2 // Go otomatik tip dönüşümü yapmaz, açıkça çevirmek gerekir
++	fmt.Println(y)      // 3.5
++} // program sonu
+diff --git a/temeller/02-degiskenler-ve-tipler.md b/temeller/02-degiskenler-ve-tipler.md
+index dbba63f..c02580b 100644
+--- a/temeller/02-degiskenler-ve-tipler.md
++++ b/temeller/02-degiskenler-ve-tipler.md
+@@ -37,6 +37,8 @@ Daire alanı: 12.56
+ 3.5
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/02-degiskenler-ve-tipler`
++
+ ---
+ 
+ [← Merhaba Dünya](01-merhaba-dunya.md) · [İçindekiler](../README.md#go-temelleri) · [if / else →](03-if-else.md)
+-- 
+2.43.0
+

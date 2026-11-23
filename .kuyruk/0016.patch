@@ -1,0 +1,67 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:58 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20s=C4=B1k=20hata=207,=20interface?=
+ =?UTF-8?q?=20nil=20tuza=C4=9F=C4=B1?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ README.md                              |  2 ++
+ ornekler/hata-07-interface-nil/main.go | 29 ++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
+ create mode 100644 ornekler/hata-07-interface-nil/main.go
+
+diff --git a/README.md b/README.md
+index 0c783cc..18cac93 100644
+--- a/README.md
++++ b/README.md
+@@ -260,6 +260,8 @@ func islem() error {          // dönüş tipi error interface'i
+ }
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/hata-07-interface-nil`
++
+ ---
+ 
+ ## 8. range ile kopya üzerinde değişiklik yapmak
+diff --git a/ornekler/hata-07-interface-nil/main.go b/ornekler/hata-07-interface-nil/main.go
+new file mode 100644
+index 0000000..58aa0c3
+--- /dev/null
++++ b/ornekler/hata-07-interface-nil/main.go
+@@ -0,0 +1,29 @@
++// Konu: README.md, 7. interface nil tuzağı
++// Çalıştırmak için: go run ./ornekler/hata-07-interface-nil
++package main // çalıştırılabilir program
++
++import "fmt" // yazdırma paketi
++
++type BenimHatam struct{} // özel hata tipi
++
++func (e *BenimHatam) Error() string { return "benim hatam" } // error interface'ini karşılar
++
++func yanlisIslem() error { // dönüş tipi error interface'i
++	var h *BenimHatam // nil işaretçi
++	return h          // interface'e sarıldı, tipi *BenimHatam, değeri nil
++} // yanlisIslem sonu
++
++func dogruIslem() error { // dönüş tipi error interface'i
++	var h *BenimHatam // hata oluşabilecek değişken
++	if h == nil {     // gerçekten hata yoksa
++		return nil // açıkça nil interface döndür
++	} // if sonu
++	return h // hata varsa döndür
++} // dogruIslem sonu
++
++func main() { // program girişi
++	err := yanlisIslem()                                                // hatalı fonksiyonu çağır
++	fmt.Printf("❌ yanlış: err != nil → %v, tip: %T\n", err != nil, err) // true, *main.BenimHatam
++	err = dogruIslem()                                                  // doğru fonksiyonu çağır
++	fmt.Printf("✅ doğru: err != nil → %v, tip: %T\n", err != nil, err)  // false, <nil>
++} // main sonu
+-- 
+2.43.0
+

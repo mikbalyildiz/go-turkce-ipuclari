@@ -1,0 +1,61 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:58 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20s=C4=B1k=20hata=205,=20append=20v?=
+ =?UTF-8?q?e=20payla=C5=9F=C4=B1lan=20dizi?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ README.md                                |  2 ++
+ ornekler/hata-05-append-paylasim/main.go | 23 +++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
+ create mode 100644 ornekler/hata-05-append-paylasim/main.go
+
+diff --git a/README.md b/README.md
+index 67e1713..eba78f7 100644
+--- a/README.md
++++ b/README.md
+@@ -198,6 +198,8 @@ fmt.Println(a)          // [1 2 3 4]
+ 
+ > Kısa yol: `b := a[:2:2]` yazarak kapasiteyi 2 ile sınırlayabilirsiniz. Bu durumda `append` yeni bir dizi oluşturur.
+ 
++▶ Çalıştır: `go run ./ornekler/hata-05-append-paylasim`
++
+ ---
+ 
+ ## 6. Hataları yok saymak
+diff --git a/ornekler/hata-05-append-paylasim/main.go b/ornekler/hata-05-append-paylasim/main.go
+new file mode 100644
+index 0000000..646ea6f
+--- /dev/null
++++ b/ornekler/hata-05-append-paylasim/main.go
+@@ -0,0 +1,23 @@
++// Konu: README.md, 5. append sonrası slice'ların aynı diziyi paylaşması
++// Çalıştırmak için: go run ./ornekler/hata-05-append-paylasim
++package main // çalıştırılabilir program
++
++import "fmt" // yazdırma paketi
++
++func main() { // program girişi
++	a := []int{1, 2, 3, 4}      // len 4, cap 4
++	b := a[:2]                  // b = [1 2], a ile aynı diziyi kullanıyor
++	b = append(b, 99)           // yer olduğu için a[2]'nin üzerine yazar
++	fmt.Println("❌ yanlış:", a) // [1 2 99 4]
++
++	c := []int{1, 2, 3, 4}               // orijinal veri
++	d := make([]int, 2)                  // d için yeni bir dizi ayır
++	copy(d, c[:2])                       // ilk iki elemanı kopyala
++	d = append(d, 99)                    // artık c etkilenmez
++	fmt.Println("✅ doğru (copy):", c, d) // [1 2 3 4] [1 2 99]
++
++	e := []int{1, 2, 3, 4}                  // orijinal veri
++	f := e[:2:2]                            // kapasiteyi 2 ile sınırla
++	f = append(f, 99)                       // kapasite dolu, yeni dizi oluşturulur
++	fmt.Println("✅ doğru (a[:2:2]):", e, f) // [1 2 3 4] [1 2 99]
++} // main sonu
+-- 
+2.43.0
+

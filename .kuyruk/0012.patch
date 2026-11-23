@@ -1,0 +1,59 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:58 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20s=C4=B1k=20hata=203,=20main'in=20?=
+ =?UTF-8?q?goroutine'leri=20beklememesi?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ README.md                              |  2 ++
+ ornekler/hata-03-main-beklemez/main.go | 21 +++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
+ create mode 100644 ornekler/hata-03-main-beklemez/main.go
+
+diff --git a/README.md b/README.md
+index 46057bf..a8e6cf9 100644
+--- a/README.md
++++ b/README.md
+@@ -129,6 +129,8 @@ func main() {                        // program buradan başlar
+ }                                    // artık güvenle bitebilir
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/hata-03-main-beklemez`
++
+ ---
+ 
+ ## 4. defer sırasını yanlış bilmek
+diff --git a/ornekler/hata-03-main-beklemez/main.go b/ornekler/hata-03-main-beklemez/main.go
+new file mode 100644
+index 0000000..b390782
+--- /dev/null
++++ b/ornekler/hata-03-main-beklemez/main.go
+@@ -0,0 +1,21 @@
++// Konu: README.md, 3. main'in goroutine'leri beklemeyeceğini unutmak
++// Çalıştırmak için: go run ./ornekler/hata-03-main-beklemez
++package main // çalıştırılabilir program
++
++import ( // kullanılan paketler
++	"fmt"  // yazdırma
++	"sync" // WaitGroup için
++) // import sonu
++
++func main() { // program buradan başlar
++	var wg sync.WaitGroup     // bekleme sayacı
++	for i := 1; i <= 3; i++ { // üç goroutine başlat
++		wg.Add(1)        // bir goroutine bekleneceğini bildir
++		go func(n int) { // goroutine başlat
++			defer wg.Done()           // iş bitince sayacı bir azalt
++			fmt.Println("merhaba", n) // asıl iş
++		}(i) // sıra numarasını gönder
++	} // for sonu
++	wg.Wait()                                // sayaç sıfırlanana kadar bekle, bu satır silinirse çıktı görünmeyebilir
++	fmt.Println("✅ tüm goroutine'ler bitti") // artık güvenle bitebilir
++} // main sonu
+-- 
+2.43.0
+

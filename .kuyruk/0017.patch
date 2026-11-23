@@ -1,0 +1,59 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:58 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20s=C4=B1k=20hata=208,=20range=20il?=
+ =?UTF-8?q?e=20kopya?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ README.md                            |  2 ++
+ ornekler/hata-08-range-kopya/main.go | 21 +++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
+ create mode 100644 ornekler/hata-08-range-kopya/main.go
+
+diff --git a/README.md b/README.md
+index 18cac93..70a244d 100644
+--- a/README.md
++++ b/README.md
+@@ -288,6 +288,8 @@ for i := range liste {                         // indeks üzerinden dön
+ fmt.Println(liste)                             // [{60} {70}]
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/hata-08-range-kopya`
++
+ ---
+ 
+ ## 9. map'e aynı anda birden fazla goroutine'den yazmak
+diff --git a/ornekler/hata-08-range-kopya/main.go b/ornekler/hata-08-range-kopya/main.go
+new file mode 100644
+index 0000000..c9abb1c
+--- /dev/null
++++ b/ornekler/hata-08-range-kopya/main.go
+@@ -0,0 +1,21 @@
++// Konu: README.md, 8. range ile kopya üzerinde değişiklik yapmak
++// Çalıştırmak için: go run ./ornekler/hata-08-range-kopya
++package main // çalıştırılabilir program
++
++import "fmt" // yazdırma paketi
++
++type Ogrenci struct{ Not int } // basit yapı
++
++func main() { // program girişi
++	liste := []Ogrenci{{50}, {60}} // iki öğrenci
++	for _, o := range liste {      // o her turda bir kopya
++		o.Not += 10 // sadece kopya değişir
++		_ = o       // kopya kullanılmadan atılır
++	} // for sonu
++	fmt.Println("❌ yanlış:", liste) // [{50} {60}]
++
++	for i := range liste { // indeks üzerinden dön
++		liste[i].Not += 10 // asıl eleman değişir
++	} // for sonu
++	fmt.Println("✅ doğru:", liste) // [{60} {70}]
++} // main sonu
+-- 
+2.43.0
+

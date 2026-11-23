@@ -1,0 +1,68 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:58 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20s=C4=B1k=20hata=202,=20d=C3=B6ng?=
+ =?UTF-8?q?=C3=BC=20de=C4=9Fi=C5=9Fkeni=20ve=20goroutine?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ README.md                                |  2 ++
+ ornekler/hata-02-dongu-degiskeni/main.go | 30 ++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
+ create mode 100644 ornekler/hata-02-dongu-degiskeni/main.go
+
+diff --git a/README.md b/README.md
+index 45196c1..46057bf 100644
+--- a/README.md
++++ b/README.md
+@@ -99,6 +99,8 @@ for i := 0; i < 3; i++ { // döngü her zamanki gibi
+ }
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/hata-02-dongu-degiskeni`
++
+ ---
+ 
+ ## 3. main'in goroutine'leri beklemeyeceğini unutmak
+diff --git a/ornekler/hata-02-dongu-degiskeni/main.go b/ornekler/hata-02-dongu-degiskeni/main.go
+new file mode 100644
+index 0000000..2f858e1
+--- /dev/null
++++ b/ornekler/hata-02-dongu-degiskeni/main.go
+@@ -0,0 +1,30 @@
++// Konu: README.md, 2. Döngü değişkenini goroutine içinde kullanmak
++// Not: Go 1.22+ her turda yeni değişken oluşturur, eski davranış sadece Go ≤ 1.21'de görülür.
++// Çalıştırmak için: go run ./ornekler/hata-02-dongu-degiskeni
++package main // çalıştırılabilir program
++
++import ( // kullanılan paketler
++	"fmt"  // yazdırma
++	"sort" // sonuçları sıralamak için
++	"sync" // WaitGroup ve Mutex için
++) // import sonu
++
++func main() { // program girişi
++	var wg sync.WaitGroup // goroutine'leri beklemek için sayaç
++	var mu sync.Mutex     // sonuç listesini korumak için kilit
++	var sonuc []int       // goroutine'lerin bastığı değerler
++
++	for i := 0; i < 3; i++ { // üç tur dön
++		wg.Add(1)        // bir goroutine bekleneceğini bildir
++		go func(n int) { // değeri parametre olarak al, her sürümde doğru çalışır
++			defer wg.Done()          // bitince sayacı azalt
++			mu.Lock()                // listeye yazmadan önce kilitle
++			sonuc = append(sonuc, n) // goroutine'in gördüğü değeri ekle
++			mu.Unlock()              // kilidi bırak
++		}(i) // i'nin o anki değeri gönderilir
++	} // for sonu
++
++	wg.Wait()                      // tüm goroutine'leri bekle
++	sort.Ints(sonuc)               // goroutine sırası rastgele, karşılaştırmak için sırala
++	fmt.Println("✅ doğru:", sonuc) // [0 1 2]
++} // main sonu
+-- 
+2.43.0
+

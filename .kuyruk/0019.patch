@@ -1,0 +1,62 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:58 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20s=C4=B1k=20hata=2010,=20T=C3=BCrk?=
+ =?UTF-8?q?=C3=A7e=20karakterli=20string?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ README.md                              |  2 ++
+ ornekler/hata-10-turkce-string/main.go | 24 ++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
+ create mode 100644 ornekler/hata-10-turkce-string/main.go
+
+diff --git a/README.md b/README.md
+index 42746ea..415ff3c 100644
+--- a/README.md
++++ b/README.md
+@@ -357,6 +357,8 @@ fmt.Println(utf8.RuneCountInString(s))   // kopya oluşturmadan sayım: 4
+ 
+ > Ek tuzak: `strings.ToUpper("i")` sonucu `"I"` olur, Türkçedeki `"İ"` değil. Türkçe büyük/küçük harf için `strings.ToUpperSpecial(unicode.TurkishCase, s)` kullanın.
+ 
++▶ Çalıştır: `go run ./ornekler/hata-10-turkce-string`
++
+ ---
+ 
+ ## Katkı
+diff --git a/ornekler/hata-10-turkce-string/main.go b/ornekler/hata-10-turkce-string/main.go
+new file mode 100644
+index 0000000..1427ae3
+--- /dev/null
++++ b/ornekler/hata-10-turkce-string/main.go
+@@ -0,0 +1,24 @@
++// Konu: README.md, 10. Türkçe karakterli string'i byte ile işlemek
++// Çalıştırmak için: go run ./ornekler/hata-10-turkce-string
++package main // çalıştırılabilir program
++
++import ( // kullanılan paketler
++	"fmt"          // yazdırma
++	"strings"      // büyük/küçük harf dönüşümü
++	"unicode"      // Türkçe harf kuralları
++	"unicode/utf8" // UTF-8 karakter sayımı
++) // import sonu
++
++func main() { // program girişi
++	s := "Işık"                                 // 4 harf
++	fmt.Println("❌ yanlış len:", len(s))        // 6 (byte sayısı)
++	fmt.Printf("❌ yanlış s[0:2]: %q\n", s[0:2]) // "I\xc5" bozuk parça
++
++	r := []rune(s)                                           // karakterlere (rune) çevir
++	fmt.Println("✅ doğru len:", len(r))                      // 4
++	fmt.Println("✅ doğru ilk iki harf:", string(r[0:2]))     // Iş
++	fmt.Println("✅ doğru sayım:", utf8.RuneCountInString(s)) // kopya oluşturmadan: 4
++
++	fmt.Println("❌ yanlış büyük harf:", strings.ToUpper("istanbul"))                            // ISTANBUL
++	fmt.Println("✅ doğru büyük harf:", strings.ToUpperSpecial(unicode.TurkishCase, "istanbul")) // İSTANBUL
++} // main sonu
+-- 
+2.43.0
+

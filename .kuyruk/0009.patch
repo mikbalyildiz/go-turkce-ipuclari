@@ -1,0 +1,75 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:58 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20Goroutine=20ve=20Kanallar=20?=
+ =?UTF-8?q?=C3=A7al=C4=B1=C5=9Ft=C4=B1r=C4=B1labilir=20program=C4=B1?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ ornekler/10-goroutine-ve-kanal/main.go | 37 ++++++++++++++++++++++++++
+ temeller/10-goroutine-ve-kanal.md      |  2 ++
+ 2 files changed, 39 insertions(+)
+ create mode 100644 ornekler/10-goroutine-ve-kanal/main.go
+
+diff --git a/ornekler/10-goroutine-ve-kanal/main.go b/ornekler/10-goroutine-ve-kanal/main.go
+new file mode 100644
+index 0000000..fcab7ce
+--- /dev/null
++++ b/ornekler/10-goroutine-ve-kanal/main.go
+@@ -0,0 +1,37 @@
++// Konu anlatımı: temeller/10-goroutine-ve-kanal.md
++// Çalıştırmak için: go run ./ornekler/10-goroutine-ve-kanal
++package main // çalıştırılabilir program
++
++import ( // paketler
++	"fmt"  // yazdırma paketi
++	"sync" // WaitGroup için
++) // import sonu
++
++func kareAl(n int, sonuc chan<- int) { // chan<- yalnızca gönderim yapılabilen kanal
++	sonuc <- n * n // hesaplanan değeri kanala gönder
++} // fonksiyon sonu
++
++func main() { // program girişi
++	// 1) Kanal ile sonuç toplama
++	kanal := make(chan int)   // int taşıyan kanal oluştur
++	for i := 1; i <= 3; i++ { // 3 iş başlat
++		go kareAl(i, kanal) // go: fonksiyonu ayrı bir goroutine'de eşzamanlı çalıştır
++	} // döngü sonu
++	toplam := 0              // sonuçların toplamı
++	for i := 0; i < 3; i++ { // 3 sonuç bekle
++		toplam += <-kanal // <-kanal: kanaldan bir değer gelene kadar bekler ve alır
++	} // döngü sonu
++	fmt.Println("Kareler toplamı:", toplam) // 1+4+9 = 14
++
++	// 2) WaitGroup ile tüm işlerin bitmesini bekleme
++	var wg sync.WaitGroup     // bekleme sayacı
++	for i := 1; i <= 3; i++ { // 3 goroutine
++		wg.Add(1)        // sayacı bir artır
++		go func(n int) { // değeri parametre olarak geçir
++			defer wg.Done() // iş bitince sayacı azalt
++			_ = n * 2       // burada asıl iş yapılır
++		}(i) // i'nin değerini gönder
++	} // döngü sonu
++	wg.Wait()                      // hepsi bitene kadar bekle
++	fmt.Println("Tüm işler bitti") // güvenle devam et
++} // program sonu
+diff --git a/temeller/10-goroutine-ve-kanal.md b/temeller/10-goroutine-ve-kanal.md
+index ddd782c..a6b160b 100644
+--- a/temeller/10-goroutine-ve-kanal.md
++++ b/temeller/10-goroutine-ve-kanal.md
+@@ -47,6 +47,8 @@ Kareler toplamı: 14
+ Tüm işler bitti
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/10-goroutine-ve-kanal`
++
+ ---
+ 
+ [← Hata Yönetimi](09-hata-yonetimi.md) · [İçindekiler](../README.md#go-temelleri)
+-- 
+2.43.0
+

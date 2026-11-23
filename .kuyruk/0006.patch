@@ -1,0 +1,70 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:57 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20Slice=20ve=20Map=20=C3=A7al=C4=B1?=
+ =?UTF-8?q?=C5=9Ft=C4=B1r=C4=B1labilir=20program=C4=B1?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ ornekler/07-slice-ve-map/main.go | 32 ++++++++++++++++++++++++++++++++
+ temeller/07-slice-ve-map.md      |  2 ++
+ 2 files changed, 34 insertions(+)
+ create mode 100644 ornekler/07-slice-ve-map/main.go
+
+diff --git a/ornekler/07-slice-ve-map/main.go b/ornekler/07-slice-ve-map/main.go
+new file mode 100644
+index 0000000..4be23bb
+--- /dev/null
++++ b/ornekler/07-slice-ve-map/main.go
+@@ -0,0 +1,32 @@
++// Konu anlatımı: temeller/07-slice-ve-map.md
++// Çalıştırmak için: go run ./ornekler/07-slice-ve-map
++package main // çalıştırılabilir program
++
++import "fmt" // yazdırma paketi
++
++func main() { // program girişi
++	// Dizi (array): boyutu sabittir, pek sık kullanılmaz
++	var gunler [3]string     // 3 elemanlı dizi
++	gunler[0] = "Pzt"        // ilk elemana değer ata
++	fmt.Println(len(gunler)) // 3
++
++	// Slice: boyutu büyüyebilen liste, Go'da en çok kullanılan yapı
++	notlar := []int{70, 85}          // başlangıç değerleriyle slice
++	notlar = append(notlar, 90)      // sona eleman ekle, sonucu geri ata
++	fmt.Println(notlar, len(notlar)) // [70 85 90] 3
++	fmt.Println(notlar[1:3])         // dilimleme: 1. indeksten 3'e kadar (3 hariç)
++
++	// Map: anahtar-değer sözlüğü
++	baskent := map[string]string{ // string anahtar, string değer
++		"Türkiye": "Ankara", // ilk kayıt
++		"Japonya": "Tokyo",  // ikinci kayıt
++	} // map sonu
++	baskent["İtalya"] = "Roma"      // yeni kayıt ekle
++	fmt.Println(baskent["Türkiye"]) // Ankara
++
++	sehir, varMi := baskent["Mısır"] // ikinci değer anahtarın olup olmadığını söyler
++	fmt.Println(sehir == "", varMi)  // true false (yoksa sıfır değer döner)
++
++	delete(baskent, "Japonya") // kaydı sil
++	fmt.Println(len(baskent))  // 2
++} // program sonu
+diff --git a/temeller/07-slice-ve-map.md b/temeller/07-slice-ve-map.md
+index 647b2bf..e439ca0 100644
+--- a/temeller/07-slice-ve-map.md
++++ b/temeller/07-slice-ve-map.md
+@@ -46,6 +46,8 @@ true false
+ 2
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/07-slice-ve-map`
++
+ ---
+ 
+ [← Fonksiyonlar](06-fonksiyonlar.md) · [İçindekiler](../README.md#go-temelleri) · [Struct ve Metotlar →](08-struct-ve-metot.md)
+-- 
+2.43.0
+

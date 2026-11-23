@@ -1,0 +1,63 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:58 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20s=C4=B1k=20hata=204,=20defer=20s?=
+ =?UTF-8?q?=C4=B1ras=C4=B1?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ README.md                             |  2 ++
+ ornekler/hata-04-defer-sirasi/main.go | 25 +++++++++++++++++++++++++
+ 2 files changed, 27 insertions(+)
+ create mode 100644 ornekler/hata-04-defer-sirasi/main.go
+
+diff --git a/README.md b/README.md
+index a8e6cf9..67e1713 100644
+--- a/README.md
++++ b/README.md
+@@ -169,6 +169,8 @@ for _, ad := range dosyalar {       // her dosya için
+ }
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/hata-04-defer-sirasi`
++
+ ---
+ 
+ ## 5. append sonrası slice'ların aynı diziyi paylaşması
+diff --git a/ornekler/hata-04-defer-sirasi/main.go b/ornekler/hata-04-defer-sirasi/main.go
+new file mode 100644
+index 0000000..a0061b2
+--- /dev/null
++++ b/ornekler/hata-04-defer-sirasi/main.go
+@@ -0,0 +1,25 @@
++// Konu: README.md, 4. defer sırasını yanlış bilmek
++// Çalıştırmak için: go run ./ornekler/hata-04-defer-sirasi
++package main // çalıştırılabilir program
++
++import "fmt" // yazdırma paketi
++
++func lifo() { // defer sırasını gösteren fonksiyon
++	for i := 1; i <= 3; i++ { // 1, 2, 3 için döner
++		defer fmt.Println("defer", i) // son giren ilk çıkar: 3 2 1
++	} // for sonu
++	fmt.Println("döngü bitti, defer'ler şimdi çalışacak") // önce bu satır basılır
++} // fonksiyon biterken defer'ler ters sırayla çalışır
++
++func dosyaIsle(ad string) { // her dosya için ayrı fonksiyon kapsamı
++	fmt.Println("açıldı:", ad)        // dosyayı açmayı temsil eder
++	defer fmt.Println("kapandı:", ad) // bu fonksiyon bitince hemen çalışır
++	fmt.Println("işlendi:", ad)       // asıl iş
++} // dosya burada kapanır, döngünün sonunu beklemez
++
++func main() { // program girişi
++	lifo()                                          // LIFO örneği
++	for _, ad := range []string{"a.txt", "b.txt"} { // iki dosya dolaş
++		dosyaIsle(ad) // ✅ doğru: her dosya kendi turunda kapanır
++	} // for sonu
++} // main sonu
+-- 
+2.43.0
+

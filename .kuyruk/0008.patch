@@ -1,0 +1,70 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:57 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20Hata=20Y=C3=B6netimi=20=C3=A7al?=
+ =?UTF-8?q?=C4=B1=C5=9Ft=C4=B1r=C4=B1labilir=20program=C4=B1?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ ornekler/09-hata-yonetimi/main.go | 32 +++++++++++++++++++++++++++++++
+ temeller/09-hata-yonetimi.md      |  2 ++
+ 2 files changed, 34 insertions(+)
+ create mode 100644 ornekler/09-hata-yonetimi/main.go
+
+diff --git a/ornekler/09-hata-yonetimi/main.go b/ornekler/09-hata-yonetimi/main.go
+new file mode 100644
+index 0000000..622c334
+--- /dev/null
++++ b/ornekler/09-hata-yonetimi/main.go
+@@ -0,0 +1,32 @@
++// Konu anlatımı: temeller/09-hata-yonetimi.md
++// Çalıştırmak için: go run ./ornekler/09-hata-yonetimi
++package main // çalıştırılabilir program
++
++import ( // birden fazla paket parantezle içe aktarılır
++	"errors"  // yeni hata oluşturmak için
++	"fmt"     // yazdırma paketi
++	"strconv" // metin-sayı dönüşümü
++) // import sonu
++
++func bol(a, b float64) (float64, error) { // son dönüş değeri olarak error döndürmek Go geleneğidir
++	if b == 0 { // sıfıra bölme kontrolü
++		return 0, errors.New("sıfıra bölünemez") // hata durumunda anlamlı mesaj
++	} // if sonu
++	return a / b, nil // nil: hata yok demektir
++} // fonksiyon sonu
++
++func main() { // program girişi
++	sonuc, err := bol(10, 0) // sonucu ve hatayı birlikte al
++	if err != nil {          // her zaman önce hatayı kontrol et
++		fmt.Println("Hata:", err) // Hata: sıfıra bölünemez
++	} else { // hata yoksa
++		fmt.Println(sonuc) // sonucu kullan
++	} // if sonu
++
++	sayi, err := strconv.Atoi("42") // metni int'e çevir, hata dönebilir
++	if err != nil {                 // dönüşüm başarısızsa
++		fmt.Println("Geçersiz sayı") // kullanıcıya bildir
++		return                       // fonksiyondan çık
++	} // if sonu
++	fmt.Println(sayi + 1) // 43
++} // program sonu
+diff --git a/temeller/09-hata-yonetimi.md b/temeller/09-hata-yonetimi.md
+index 423087b..4265245 100644
+--- a/temeller/09-hata-yonetimi.md
++++ b/temeller/09-hata-yonetimi.md
+@@ -42,6 +42,8 @@ Hata: sıfıra bölünemez
+ 43
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/09-hata-yonetimi`
++
+ ---
+ 
+ [← Struct ve Metotlar](08-struct-ve-metot.md) · [İçindekiler](../README.md#go-temelleri) · [Goroutine ve Kanallar →](10-goroutine-ve-kanal.md)
+-- 
+2.43.0
+

@@ -1,0 +1,76 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:57 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20for=20d=C3=B6ng=C3=BCs=C3=BC=20?=
+ =?UTF-8?q?=C3=A7al=C4=B1=C5=9Ft=C4=B1r=C4=B1labilir=20program=C4=B1?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ ornekler/04-for-dongusu/main.go | 38 +++++++++++++++++++++++++++++++++
+ temeller/04-for-dongusu.md      |  2 ++
+ 2 files changed, 40 insertions(+)
+ create mode 100644 ornekler/04-for-dongusu/main.go
+
+diff --git a/ornekler/04-for-dongusu/main.go b/ornekler/04-for-dongusu/main.go
+new file mode 100644
+index 0000000..0aab68a
+--- /dev/null
++++ b/ornekler/04-for-dongusu/main.go
+@@ -0,0 +1,38 @@
++// Konu anlatımı: temeller/04-for-dongusu.md
++// Çalıştırmak için: go run ./ornekler/04-for-dongusu
++package main // çalıştırılabilir program
++
++import "fmt" // yazdırma paketi
++
++func main() { // program girişi
++	// 1) Klasik for: başlangıç; koşul; artış
++	for i := 1; i <= 3; i++ { // i 1'den başlar, 3'e kadar birer artar
++		fmt.Println("tur", i) // her turda çalışır
++	} // döngü sonu
++
++	// 2) while gibi for: Go'da while yoktur, sadece koşul yazılır
++	sayac := 3      // geri sayım başlangıcı
++	for sayac > 0 { // koşul doğru olduğu sürece döner
++		fmt.Println("geri sayım:", sayac) // değeri yazdır
++		sayac--                           // koşulu sonunda bozacak adım
++	} // while benzeri döngü sonu
++
++	// 3) Sonsuz döngü + break
++	n := 0 // sayaç
++	for {  // koşulsuz for sonsuza kadar döner
++		n++         // her turda bir artır
++		if n == 2 { // 2'yi atla
++			continue // döngünün kalanını geç, sonraki tura başla
++		} // if sonu
++		if n > 4 { // çıkış koşulu
++			break // döngüden tamamen çık
++		} // if sonu
++		fmt.Println("n =", n) // 1, 3, 4 yazılır
++	} // sonsuz döngü sonu
++
++	// 4) range: dizi, slice, map ve string üzerinde gezinme
++	meyveler := []string{"elma", "armut"} // örnek liste
++	for indeks, meyve := range meyveler { // indeks ve değer birlikte gelir
++		fmt.Println(indeks, meyve) // 0 elma, 1 armut
++	} // range sonu
++} // program sonu
+diff --git a/temeller/04-for-dongusu.md b/temeller/04-for-dongusu.md
+index 50b601c..4da5af6 100644
+--- a/temeller/04-for-dongusu.md
++++ b/temeller/04-for-dongusu.md
+@@ -57,6 +57,8 @@ n = 4
+ 1 armut
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/04-for-dongusu`
++
+ ---
+ 
+ [← if / else](03-if-else.md) · [İçindekiler](../README.md#go-temelleri) · [switch →](05-switch.md)
+-- 
+2.43.0
+

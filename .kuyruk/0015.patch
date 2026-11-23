@@ -1,0 +1,68 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:58 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20s=C4=B1k=20hata=206,=20hatalar?=
+ =?UTF-8?q?=C4=B1=20yok=20saymak?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ README.md                               |  2 ++
+ ornekler/hata-06-hata-yok-sayma/main.go | 30 +++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
+ create mode 100644 ornekler/hata-06-hata-yok-sayma/main.go
+
+diff --git a/README.md b/README.md
+index eba78f7..0c783cc 100644
+--- a/README.md
++++ b/README.md
+@@ -223,6 +223,8 @@ if err != nil {                                   // hata var mı kontrol et
+ fmt.Println(sayi * 2)                             // sadece geçerli değerle devam et
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/hata-06-hata-yok-sayma`
++
+ ---
+ 
+ ## 7. interface nil tuzağı
+diff --git a/ornekler/hata-06-hata-yok-sayma/main.go b/ornekler/hata-06-hata-yok-sayma/main.go
+new file mode 100644
+index 0000000..2a77117
+--- /dev/null
++++ b/ornekler/hata-06-hata-yok-sayma/main.go
+@@ -0,0 +1,30 @@
++// Konu: README.md, 6. Hataları yok saymak
++// Çalıştırmak için: go run ./ornekler/hata-06-hata-yok-sayma
++package main // çalıştırılabilir program
++
++import ( // kullanılan paketler
++	"fmt"     // yazdırma ve hata sarma
++	"strconv" // metni sayıya çevirmek için
++) // import sonu
++
++func ikiKati(metin string) (int, error) { // hatayı yukarı ileten doğru kullanım
++	sayi, err := strconv.Atoi(metin) // hatayı değişkene al
++	if err != nil {                  // hata var mı kontrol et
++		return 0, fmt.Errorf("sayı okunamadı: %w", err) // bağlam ekleyip yukarı ilet
++	} // if sonu
++	return sayi * 2, nil // sadece geçerli değerle devam et
++} // ikiKati sonu
++
++func main() { // program girişi
++	sayi, _ := strconv.Atoi("12a")   // ❌ hata yok sayıldı
++	fmt.Println("❌ yanlış:", sayi*2) // 0 basar ve hiçbir uyarı vermez
++
++	for _, girdi := range []string{"21", "12a"} { // biri geçerli, biri hatalı girdi
++		sonuc, err := ikiKati(girdi) // ✅ hatayı al
++		if err != nil {              // hata varsa
++			fmt.Println("✅ doğru, hata yakalandı:", err) // anlamlı mesaj
++			continue                                     // sıradaki girdiye geç
++		} // if sonu
++		fmt.Println("✅ doğru:", sonuc) // 42
++	} // for sonu
++} // main sonu
+-- 
+2.43.0
+

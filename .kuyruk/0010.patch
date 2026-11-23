@@ -1,0 +1,65 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:58 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20s=C4=B1k=20hata=201,=20nil=20map'?=
+ =?UTF-8?q?e=20yazmak?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ README.md                        |  2 ++
+ ornekler/hata-01-nil-map/main.go | 27 +++++++++++++++++++++++++++
+ 2 files changed, 29 insertions(+)
+ create mode 100644 ornekler/hata-01-nil-map/main.go
+
+diff --git a/README.md b/README.md
+index 8957cdf..45196c1 100644
+--- a/README.md
++++ b/README.md
+@@ -71,6 +71,8 @@ notlar := make(map[string]int) // make ile map bellekte oluşturulur
+ notlar["ali"] = 90             // artık güvenle yazılabilir
+ ```
+ 
++▶ Çalıştır: `go run ./ornekler/hata-01-nil-map`
++
+ ---
+ 
+ ## 2. Döngü değişkenini goroutine içinde kullanmak
+diff --git a/ornekler/hata-01-nil-map/main.go b/ornekler/hata-01-nil-map/main.go
+new file mode 100644
+index 0000000..9cacf35
+--- /dev/null
++++ b/ornekler/hata-01-nil-map/main.go
+@@ -0,0 +1,27 @@
++// Konu: README.md, 1. nil map'e yazmak
++// Çalıştırmak için: go run ./ornekler/hata-01-nil-map
++package main // çalıştırılabilir program
++
++import "fmt" // yazdırma paketi
++
++func yanlis() { // hatalı kullanımı güvenle gösteren fonksiyon
++	defer func() { // fonksiyon biterken çalışacak kurtarma bloğu
++		if r := recover(); r != nil { // panic olduysa yakala
++			fmt.Println("❌ yanlış:", r) // panic mesajını yazdır
++		} // if sonu
++	}() // ertelenen fonksiyonu hemen tanımla
++	var notlar map[string]int                    // map tanımlandı ama oluşturulmadı, değeri nil
++	fmt.Println("nil map okuma:", notlar["ali"]) // okumak sorunsuz, 0 döner
++	notlar["ali"] = 90                           // yazmak panic üretir
++} // yanlis sonu
++
++func dogru() { // doğru kullanım
++	notlar := make(map[string]int)  // make ile map bellekte oluşturulur
++	notlar["ali"] = 90              // artık güvenle yazılabilir
++	fmt.Println("✅ doğru:", notlar) // map[ali:90]
++} // dogru sonu
++
++func main() { // program girişi
++	yanlis() // önce hatalı örnek
++	dogru()  // sonra doğru örnek
++} // main sonu
+-- 
+2.43.0
+

@@ -1,0 +1,66 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Muhammet=20=C4=B0kbal=20YILDIZ?=
+ <95693214+mikbalyildiz@users.noreply.github.com>
+Date: Mon, 23 Nov 2026 08:16:58 +0000
+Subject: [PATCH] =?UTF-8?q?=C3=96rnek:=20s=C4=B1k=20hata=209,=20map'e=20e?=
+ =?UTF-8?q?=C5=9Fzamanl=C4=B1=20yazma?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ README.md                              |  2 ++
+ ornekler/hata-09-esz-map-yazma/main.go | 28 ++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
+ create mode 100644 ornekler/hata-09-esz-map-yazma/main.go
+
+diff --git a/README.md b/README.md
+index 70a244d..42746ea 100644
+--- a/README.md
++++ b/README.md
+@@ -329,6 +329,8 @@ wg.Wait()                        // tüm goroutine'leri bekle
+ 
+ > İpucu: Bu tür hataları bulmak için testleri `go test -race` ile çalıştırın.
+ 
++▶ Çalıştır: `go run -race ./ornekler/hata-09-esz-map-yazma`
++
+ ---
+ 
+ ## 10. Türkçe karakterli string'i byte ile işlemek
+diff --git a/ornekler/hata-09-esz-map-yazma/main.go b/ornekler/hata-09-esz-map-yazma/main.go
+new file mode 100644
+index 0000000..9ce5105
+--- /dev/null
++++ b/ornekler/hata-09-esz-map-yazma/main.go
+@@ -0,0 +1,28 @@
++// Konu: README.md, 9. map'e aynı anda birden fazla goroutine'den yazmak
++// Hatalı sürüm programı tamamen çökerttiği için (recover ile yakalanamaz) burada sadece doğru sürüm var.
++// Çalıştırmak için: go run -race ./ornekler/hata-09-esz-map-yazma
++package main // çalıştırılabilir program
++
++import ( // kullanılan paketler
++	"fmt"  // yazdırma
++	"sync" // Mutex ve WaitGroup için
++) // import sonu
++
++func main() { // program girişi
++	var ( // paylaşılan değişkenler
++		mu    sync.Mutex         // map'i korumak için kilit
++		sayac = map[string]int{} // paylaşılan map
++		wg    sync.WaitGroup     // goroutine'leri beklemek için
++	) // var sonu
++	for i := 0; i < 100; i++ { // 100 goroutine
++		wg.Add(1)   // bekleme sayacını artır
++		go func() { // goroutine başlat
++			defer wg.Done()    // bitince sayacı azalt
++			mu.Lock()          // kilidi al
++			sayac["ziyaret"]++ // güvenli yazma
++			mu.Unlock()        // kilidi bırak
++		}() // fonksiyon hemen çağrılıyor
++	} // for sonu
++	wg.Wait()                                 // tüm goroutine'leri bekle
++	fmt.Println("✅ doğru:", sayac["ziyaret"]) // her zaman 100
++} // main sonu
+-- 
+2.43.0
+
