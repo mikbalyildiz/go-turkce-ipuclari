@@ -37,6 +37,8 @@ Daire alanı: 12.56
 3.5
 ```
 
+▶ Çalıştır: `go run ./ornekler/02-degiskenler-ve-tipler`
+
 ---
 
 [← Merhaba Dünya](01-merhaba-dunya.md) · [İçindekiler](../README.md#go-temelleri) · [if / else →](03-if-else.md)
