@@ -20,6 +20,8 @@ func main() { // program buradan başlar
 Merhaba, Dünya!
 ```
 
+▶ Çalıştır: `go run ./ornekler/01-merhaba-dunya`
+
 ---
 
 [İçindekiler](../README.md#go-temelleri) · [Değişkenler ve Tipler →](02-degiskenler-ve-tipler.md)
