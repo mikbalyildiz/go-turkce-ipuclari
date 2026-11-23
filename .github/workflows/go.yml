@@ -1,0 +1,41 @@
+# İş akışının GitHub'da görünen adı
+name: Go
+
+# Ne zaman çalışacağı
+on:
+  # main dalına her gönderimde çalış
+  push:
+    branches: [main]
+  # main dalına açılan her pull request'te çalış
+  pull_request:
+    branches: [main]
+  # Actions sekmesinden elle başlatılabilsin
+  workflow_dispatch:
+
+# Çalışacak işler
+jobs:
+  # Tek iş: derle, denetle, test et
+  kontrol:
+    # Ubuntu sanal makinesinde çalış
+    runs-on: ubuntu-latest
+    # Adımlar sırayla çalışır
+    steps:
+      # Repo dosyalarını makineye indir
+      - uses: actions/checkout@v4
+      # Go'yu go.mod'daki sürümle kur
+      - uses: actions/setup-go@v5
+        with:
+          # Sürümü go.mod dosyasından oku
+          go-version-file: go.mod
+      # Biçim kontrolü: gofmt'e uymayan dosya varsa hata ver
+      - name: gofmt
+        run: test -z "$(gofmt -l .)"
+      # Tüm paketleri derle
+      - name: Derle
+        run: go build ./...
+      # Olası hataları statik olarak denetle
+      - name: go vet
+        run: go vet ./...
+      # Testleri çalıştır
+      - name: Test
+        run: go test ./...

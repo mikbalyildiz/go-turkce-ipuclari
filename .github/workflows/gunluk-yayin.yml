@@ -1,0 +1,74 @@
+# İş akışının GitHub'da görünen adı
+name: Günlük yayın
+
+# Ne zaman çalışacağı
+on:
+  # Her gün 06:17 UTC'de (Türkiye saatiyle 09:17) çalış
+  schedule:
+    - cron: "17 6 * * *"
+  # Actions sekmesinden elle de başlatılabilsin
+  workflow_dispatch:
+
+# Repoya commit gönderebilmek için yazma izni
+permissions:
+  contents: write
+
+# Aynı anda iki yayın çalışmasın
+concurrency: gunluk-yayin
+
+# Çalışacak işler
+jobs:
+  # Kuyruktan sıradaki içeriği yayınlayan iş
+  yayinla:
+    # Ubuntu sanal makinesinde çalış
+    runs-on: ubuntu-latest
+    # Adımlar sırayla çalışır
+    steps:
+      # Repo dosyalarını makineye indir
+      - uses: actions/checkout@v4
+      # Go'yu go.mod'daki sürümle kur
+      - uses: actions/setup-go@v5
+        with:
+          # Sürümü go.mod dosyasından oku
+          go-version-file: go.mod
+      # .kuyruk klasöründeki en küçük numaralı yamayı bul
+      - name: Sıradaki içeriği bul
+        id: sira
+        run: echo "yama=$(ls .kuyruk/*.patch 2>/dev/null | sort | head -n 1)" >> "$GITHUB_OUTPUT"
+      # Kuyruk boşsa bilgi ver ve başka bir şey yapma
+      - name: Kuyruk boş mu
+        if: steps.sira.outputs.yama == ''
+        run: echo "Kuyrukta yayınlanacak içerik kalmadı."
+      # Yamayı uygula, yazar bilgisi yamadan gelir, tarih bugünün tarihi olur
+      - name: İçeriği uygula
+        if: steps.sira.outputs.yama != ''
+        env:
+          # Uygulanacak yama dosyasının yolu
+          YAMA: ${{ steps.sira.outputs.yama }}
+        run: |
+          # Commit'i gönderen (committer) bilgisi
+          git config user.name "github-actions[bot]"
+          # Committer e-postası
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Yamayı commit olarak uygula, yazar tarihini bugüne çek
+          git am --ignore-date "$YAMA"
+          # Yayınlanan yamayı kuyruktan çıkar
+          git rm -q "$YAMA"
+          # Kuyruktan çıkarmayı aynı commit'e ekle, yazar bilgisini koru
+          git commit -q --amend --no-edit
+      # Göndermeden önce biçim, derleme, vet ve test kontrolü
+      - name: Kontrol
+        if: steps.sira.outputs.yama != ''
+        run: |
+          # gofmt'e uymayan dosya varsa dur
+          test -z "$(gofmt -l .)"
+          # Tüm paketleri derle
+          go build ./...
+          # Statik denetim
+          go vet ./...
+          # Testleri çalıştır
+          go test ./...
+      # Her şey geçtiyse main dalına gönder
+      - name: Gönder
+        if: steps.sira.outputs.yama != ''
+        run: git push origin HEAD:main
