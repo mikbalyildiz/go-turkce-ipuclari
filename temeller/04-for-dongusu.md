@@ -57,6 +57,8 @@ n = 4
 1 armut
 ```
 
+▶ Çalıştır: `go run ./ornekler/04-for-dongusu`
+
 ---
 
 [← if / else](03-if-else.md) · [İçindekiler](../README.md#go-temelleri) · [switch →](05-switch.md)
