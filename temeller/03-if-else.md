@@ -39,6 +39,8 @@ Not çift sayı
 Araç kullanabilir
 ```
 
+▶ Çalıştır: `go run ./ornekler/03-if-else`
+
 ---
 
 [← Değişkenler ve Tipler](02-degiskenler-ve-tipler.md) · [İçindekiler](../README.md#go-temelleri) · [for Döngüsü (ve while) →](04-for-dongusu.md)
