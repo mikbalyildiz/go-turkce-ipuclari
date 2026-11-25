@@ -3,9 +3,10 @@ name: Günlük yayın
 
 # Ne zaman çalışacağı
 on:
-  # Her gün 06:17 UTC'de (Türkiye saatiyle 09:17) çalış
+  # GitHub zamanlamayı geciktirebildiği için gün boyunca 3 saatte bir dene (UTC 00:17, 03:17 ... 21:17)
+  # O gün yayın yapıldıysa sonraki denemeler hiçbir şey yapmaz
   schedule:
-    - cron: "17 6 * * *"
+    - cron: "17 */3 * * *"
   # Actions sekmesinden elle de başlatılabilsin
   workflow_dispatch:
 
@@ -26,6 +27,9 @@ jobs:
     steps:
       # Repo dosyalarını makineye indir
       - uses: actions/checkout@v4
+        with:
+          # Bugünkü yayın kontrolü için son commit'leri de indir
+          fetch-depth: 30
       # Go'yu go.mod'daki sürümle kur
       - uses: actions/setup-go@v5
         with:
@@ -34,11 +38,19 @@ jobs:
       # .kuyruk klasöründeki en küçük numaralı yamayı bul
       - name: Sıradaki içeriği bul
         id: sira
-        run: echo "yama=$(ls .kuyruk/*.patch 2>/dev/null | sort | head -n 1)" >> "$GITHUB_OUTPUT"
+        run: |
+          # Bugün (UTC) bot kuyruktan zaten yayın yaptıysa tekrar yapma
+          if git log --since="$(date -u +%Y-%m-%d) 00:00 +0000" --committer="github-actions" --format=%h -- .kuyruk | grep -q .; then
+            # Boş çıktı, sonraki adımlar atlanır
+            echo "yama=" >> "$GITHUB_OUTPUT"
+          else
+            # En küçük numaralı yamayı seç
+            echo "yama=$(ls .kuyruk/*.patch 2>/dev/null | sort | head -n 1)" >> "$GITHUB_OUTPUT"
+          fi
       # Kuyruk boşsa bilgi ver ve başka bir şey yapma
       - name: Kuyruk boş mu
         if: steps.sira.outputs.yama == ''
-        run: echo "Kuyrukta yayınlanacak içerik kalmadı."
+        run: echo "Bugün yayın yapıldı ya da kuyruk boş."
       # Yamayı uygula, yazar bilgisi yamadan gelir, tarih bugünün tarihi olur
       - name: İçeriği uygula
         if: steps.sira.outputs.yama != ''
