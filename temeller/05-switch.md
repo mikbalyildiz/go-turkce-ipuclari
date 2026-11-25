@@ -48,6 +48,8 @@ bir
 iki
 ```
 
+▶ Çalıştır: `go run ./ornekler/05-switch`
+
 ---
 
 [← for Döngüsü (ve while)](04-for-dongusu.md) · [İçindekiler](../README.md#go-temelleri) · [Fonksiyonlar →](06-fonksiyonlar.md)
