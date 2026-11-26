@@ -43,6 +43,8 @@ func main() { // program girişi
 25
 ```
 
+▶ Çalıştır: `go run ./ornekler/06-fonksiyonlar`
+
 ---
 
 [← switch](05-switch.md) · [İçindekiler](../README.md#go-temelleri) · [Slice ve Map →](07-slice-ve-map.md)
