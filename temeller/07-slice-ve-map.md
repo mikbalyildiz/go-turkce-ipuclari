@@ -46,6 +46,8 @@ true false
 2
 ```
 
+▶ Çalıştır: `go run ./ornekler/07-slice-ve-map`
+
 ---
 
 [← Fonksiyonlar](06-fonksiyonlar.md) · [İçindekiler](../README.md#go-temelleri) · [Struct ve Metotlar →](08-struct-ve-metot.md)
