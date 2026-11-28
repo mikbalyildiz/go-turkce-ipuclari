@@ -40,6 +40,8 @@ Ali kaldı
 {Ad:Ali Not:55}
 ```
 
+▶ Çalıştır: `go run ./ornekler/08-struct-ve-metot`
+
 ---
 
 [← Slice ve Map](07-slice-ve-map.md) · [İçindekiler](../README.md#go-temelleri) · [Hata Yönetimi →](09-hata-yonetimi.md)
